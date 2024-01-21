@@ -28,8 +28,10 @@ class App extends Component {
     const { contacts } = this.state;
     const normalizeName = name.toLowerCase();
     const dublicate = contacts.find(item => {
-      return item.name.toLowerCase() === normalizeName;
+      const normalizedName = item.name.toLowerCase();
+      return normalizeName === normalizedName;
     });
+    return Boolean(dublicate);
   }
   addContact = data => {
     if (this.isDublicate(data)) {
