@@ -10,15 +10,26 @@ class App extends Component {
     name: '',
   };
 
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('my-contacts'));
+    if (contacts?.length) {
+      this.setState({ contacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (prevState.contacts.length !== contacts.length) {
+      localStorage.setItem('my-contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   isDublicate({ name }) {
     const { contacts } = this.state;
     const normalizeName = name.toLowerCase();
     const dublicate = contacts.find(item => {
-      // const normalizeCurrentName = item.name.toLowerCase();
       return item.name.toLowerCase() === normalizeName;
-      // return normalizeCurrentName === normalizeName;
     });
-    // return Boolean(dublicate);
   }
   addContact = data => {
     if (this.isDublicate(data)) {
